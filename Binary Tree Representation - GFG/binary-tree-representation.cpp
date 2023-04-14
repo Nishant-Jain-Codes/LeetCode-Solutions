@@ -52,7 +52,8 @@ struct node *newNode(int data) {
 
 class Solution{
 public:
-
+    //brute force solution 
+    /*
     void create_tree(node* root0, vector<int> &vec){
         //Your code goes here
         root0->left = newNode(vec[1]);
@@ -61,6 +62,21 @@ public:
         root0->left->right = newNode(vec[4]);
         root0->right->left = newNode(vec[5]);
         root0->right->right = newNode(vec[6]);
+    }
+    */
+    //better solution 
+    void create_tree(node* root0, vector<int> &vec){
+        queue<node*> q;
+        q.push(root0);
+        for(int i=1;i<vec.size();i++){
+            node* fr = q.front();
+            q.pop();
+            fr->left = newNode(vec[i]);
+            q.push(fr->left);
+            i++;
+            fr->right = newNode(vec[i]);
+            q.push(fr->right);
+        }
     }
 
 };
