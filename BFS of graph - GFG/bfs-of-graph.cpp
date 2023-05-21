@@ -17,7 +17,6 @@ class Solution {
             int curV = q.front();
             q.pop();
             bfs.push_back(curV);
-            visited[curV] = true;
             for(int adjV : adj[curV]){
                 if(!visited[adjV])
                   {
