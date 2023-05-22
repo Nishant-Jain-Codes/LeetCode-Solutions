@@ -9,14 +9,19 @@ class Solution {
         if(row < 0 || row >= grid.size() || col < 0 || col >= grid[0].size() || visited[row][col] || grid[row][col] == '0')
             return;
         visited[row][col] = true;
-        dfs(grid,visited,row+1,col);
-        dfs(grid,visited,row-1,col);
-        dfs(grid,visited,row+1,col+1);
-        dfs(grid,visited,row+1,col-1);
-        dfs(grid,visited,row-1,col+1);
-        dfs(grid,visited,row-1,col-1);
-        dfs(grid,visited,row,col+1);
-        dfs(grid,visited,row,col-1);
+        for(int i = row-1;i<=row+1;i++){
+            for(int j=col-1;j<=col+1;j++){
+                dfs(grid,visited,i,j);
+            }
+        }
+        // dfs(grid,visited,row+1,col);
+        // dfs(grid,visited,row-1,col);
+        // dfs(grid,visited,row+1,col+1);
+        // dfs(grid,visited,row+1,col-1);
+        // dfs(grid,visited,row-1,col+1);
+        // dfs(grid,visited,row-1,col-1);
+        // dfs(grid,visited,row,col+1);
+        // dfs(grid,visited,row,col-1);
     }
 
   public:
