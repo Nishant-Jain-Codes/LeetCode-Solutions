@@ -5,6 +5,7 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   private:
+        private: //bfs solution
         bool bfs(int src,int V, vector<int> adj[],vector<int>&visited) {
             queue<pair<int, int>> q;
             q.push({src, -1});
@@ -27,7 +28,7 @@ class Solution {
             }
             return false;
         }
-        bool bfsSol(int V , vector<int> adj[]){
+        bool bfsSol(int src,int V , vector<int> adj[]){
             vector<int> visited(V, 0);
             bool ans = false;
             for(int i=0;i<V;i++){
@@ -36,12 +37,38 @@ class Solution {
                 }
             }
             return ans;
-        }    
+        }   
+    private: //dfs solution
+     bool dfs(int src,int par, vector<int>adj[],vector<int>&visited) {
+            visited[src]=true;
+            for(auto it : adj[src]){
+                if(!visited[it] ){
+                    if(dfs(it,src,adj,visited))
+                        return true;
+                }
+                else if(it!=par){
+                    return true;
+                }
+            }
+            return false;
+        }
+        bool dfsSol(int V , vector<int> adj[]){
+            vector<int> visited(V, 0);
+            bool ans = false;
+            for(int i=0;i<V;i++){
+                if(!visited[i]){
+                    ans = ans || dfs(i,-1,adj,visited);
+                }
+            }
+            return ans;
+        }
     public:
         // Function to detect cycle in an undirected graph.
         bool isCycle(int V, vector<int> adj[]) {
             // Code here
-            return bfsSol(V, adj);}
+            // return bfsSol(V, adj);
+            return dfsSol(V, adj);
+        }
 };
 
 //{ Driver Code Starts.
