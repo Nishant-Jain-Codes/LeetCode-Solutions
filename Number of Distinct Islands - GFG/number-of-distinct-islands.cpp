@@ -20,6 +20,27 @@ class Solution {
         dfs(grid,curRow,curCol+1,baseRow,baseCol,island,visited);
         dfs(grid,curRow,curCol-1,baseRow,baseCol,island,visited);
     }
+    void bfs(vector<vector<int>>& grid , int startRow,int startCol,int baseRow,int baseCol,vector<pair<int,int>>& island,vector<vector<bool>>& visited){
+        queue<pair<int,int>> q;
+        q.push({startRow,startCol});
+        visited[startRow][startCol]=true;
+        int deltaRow []= {-1, 0 , 1, 0};
+        int deltaCol []= {0, 1, 0, -1};
+        while(!q.empty()){
+            int curRow = q.front().first;
+            int curCol = q.front().second;
+            q.pop();
+            island.push_back({curRow-baseRow,curCol-baseCol});
+            for(int i=0;i<4;i++){
+                int newRow = curRow + deltaRow[i];
+                int newCol = curCol + deltaCol[i];
+                if(newRow>=0 && newCol>=0 && newRow<grid.size() && newCol<grid[0].size() && grid[newRow][newCol]==1 && !visited[newRow][newCol]){
+                    visited[newRow][newCol]=true;
+                    q.push({newRow,newCol});
+                }
+            }
+        }
+    }
     public:
     int countDistinctIslands(vector<vector<int>>& grid) {
         // code here
@@ -31,7 +52,8 @@ class Solution {
             for(int j=0;j<m;j++){
                 if(grid[i][j]==1&&!visited[i][j]){
                     vector<pair<int,int>> island;
-                    dfs(grid,i,j,i,j,island,visited);
+                    // dfs(grid,i,j,i,j,island,visited);
+                    bfs(grid,i,j,i,j,island,visited);
                     uniqueIslands.insert(island);
                 }
             }
