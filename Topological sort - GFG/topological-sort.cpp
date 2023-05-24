@@ -5,6 +5,34 @@ using namespace std;
 // } Driver Code Ends
 class Solution
 {private:
+    //kahn's algorithm
+    vector<int> bfsSolution(int V , vector<int> adj[]){
+        vector<int> indegree(V,0);
+        for(int i=0;i<V;i++){
+            for(auto it:adj[i]){
+                indegree[it]++;
+            }
+        }
+        queue<int> q;
+        for(int v=0;v<V;v++){
+            if(indegree[v]==0)
+                q.push(v);
+        }
+        vector<int> output;
+        while(!q.empty()){
+            int curNode = q.front();
+            output.push_back(curNode);
+            q.pop();
+            for(auto it:adj[curNode]){
+                indegree[it]--;
+                if(indegree[it]==0){
+                    q.push(it);
+                }
+            }
+        }
+        return output;
+    }
+    private:
     void dfs(int node,vector<int> adj[],vector<bool> &visited,stack<int> &stk){
         visited[node]=true;
         for(auto it:adj[node]){
@@ -34,7 +62,8 @@ class Solution
 	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
 	    // code here
-        return dfsSolution(V,adj);
+        // return dfsSolution(V,adj);
+        return bfsSolution(V,adj);
 	}
 };
 
