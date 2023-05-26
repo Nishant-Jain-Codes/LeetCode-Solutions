@@ -5,7 +5,7 @@ using namespace std;
 // } Driver Code Ends
 class Solution
 {
-	 private:
+	private:
     vector <int> simpleQueueSol(int V, vector<vector<int>> adj[], int start)
     {
         vector<int> dist(V,-1);
@@ -42,11 +42,34 @@ class Solution
         }
         return minDist;
     }
+    vector <int> setSol(int V, vector<vector<int>> adj[], int S){
+        set<pair<int,int>> st;
+        vector<int> minDist(V,-1);
+        st.insert({0,S});
+        minDist[S]=0;
+        while(!st.empty()){
+            int curNode = st.begin()->second;
+            int curDist = st.begin()->first;
+            st.erase(st.begin());
+            for(auto it: adj[curNode]){
+                if(minDist[it[0]]==-1){
+                    minDist[it[0]]=curDist + it[1];
+                    st.insert({minDist[it[0]],it[0]});
+                }
+                else if(minDist[it[0]]>curDist+it[1]){
+                    st.erase(st.find({minDist[it[0]],it[0]}));
+                    minDist[it[0]]=curDist + it[1];
+                    st.insert({minDist[it[0]],it[0]});
+                }
+            }
+        }
+        return minDist;
+    }
 	public:
     vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
     {
         // Code here
-        return priorityQueueSol(V, adj, S);
+        return setSol(V, adj, S);
     }
 };
 
