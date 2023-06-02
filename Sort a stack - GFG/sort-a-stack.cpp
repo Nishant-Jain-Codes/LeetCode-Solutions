@@ -45,11 +45,24 @@ class SortedStack{
 public:
 	stack<int> s;
 	void sort();
+	
 };
 */
 
 /* The below method sorts the stack s 
 you are required to complete the below method */
+void  insert(int x , stack<int> &s){
+    if(s.empty() || s.top()<= x)
+        {
+            s.push(x);
+            return ;
+        }
+    int val = s.top();
+    s.pop();
+    insert(x,s);
+    s.push(val);
+    
+}
 void SortedStack :: sort()
 {
    //Your code here
@@ -58,14 +71,5 @@ void SortedStack :: sort()
     int curTop = s.top();
     s.pop();
     sort();
-    stack<int> s2; 
-    while(!s.empty() && s.top()>curTop){
-        s2.push(s.top());
-        s.pop();
-    }
-    s.push(curTop);
-    while(!s2.empty()){
-        s.push(s2.top());
-        s2.pop();
-    }
+    insert(curTop,s);
 }
