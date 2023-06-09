@@ -14,7 +14,7 @@ public:
         vector<int> output;
         set<int> digits = set<int>(nums.begin(),nums.end());
         nums = vector<int>(digits.begin(),digits.end());
-        sort(nums.begin(),nums.end());
+        // sort(nums.begin(),nums.end());
         helperFunc(0,0,nums,target,output,answer);
         // answer = vector<vector<int>>(s.begin(),s.end());
         sort(answer.begin(),answer.end());
