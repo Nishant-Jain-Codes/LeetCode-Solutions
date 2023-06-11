@@ -33,9 +33,22 @@ private:
         }
         return dp[n-1];        
     }
+    int optimised(vector<int>& height , int n){
+        if(n==1)
+            return 0;
+        int prev2 = 0;
+        int prev1 = abs(height[0] - height[1]);
+        for(int i=2;i<n;i++){
+            int curr = min(prev1 + abs(height[i-1] - height[i]), prev2 + abs(height[i-2] - height[i]));
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
+    }
 public:
     int minimumEnergy(vector<int>& height, int n) {
         // Code here
+        return optimised(height, n);
         return tabulation(height, n);
         vector<int> dp(n, -1);
         return memoisation(height,0,n-1,dp);
