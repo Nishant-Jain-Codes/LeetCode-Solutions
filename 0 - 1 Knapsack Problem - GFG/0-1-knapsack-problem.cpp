@@ -5,6 +5,7 @@ using namespace std;
 
 // } Driver Code Ends
 
+// } Driver Code Ends
 class Solution
 {
 public:
@@ -12,6 +13,7 @@ public:
     int knapSack(int W, int wt[], int val[], int n) 
     { 
        // Your code here
+        return tabulation(W,n,wt,val);
         vector<vector<int>> dp(n,vector<int>(W+1,-1));
         return memoisation(W,n-1,wt,val,dp);
         return recursion(W,n-1,wt,val);
@@ -41,6 +43,25 @@ private:
         }
         int notTake = memoisation(leftW , curIdx - 1 , wt , val,dp);
         return dp[curIdx][leftW] = max(take , notTake);
+    }
+    int tabulation(int W ,int n , int * wt , int * val){
+        vector<vector<int>> dp(n,vector<int>(W+1,0));
+        for (int j = 0; j <= W; j++) {
+            if (j >= wt[0]) {
+                dp[0][j] = val[0];
+            }
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=W;j++){
+                int take = 0 ;
+                if(j >= wt[i]){
+                    take = dp[ i - 1][ j - wt[i]] + val[i];
+                }
+                int notTake = dp[ i - 1][ j];
+                dp[i][j] = max(take , notTake);
+            }
+        }
+        return dp[n-1][W];
     }
 };
 
