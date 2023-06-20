@@ -13,6 +13,7 @@ public:
     int knapSack(int W, int wt[], int val[], int n) 
     { 
        // Your code here
+        return optimized(W,n,wt,val);
         return tabulation(W,n,wt,val);
         vector<vector<int>> dp(n,vector<int>(W+1,-1));
         return memoisation(W,n-1,wt,val,dp);
@@ -63,7 +64,28 @@ private:
         }
         return dp[n-1][W];
     }
+    int optimized(int W ,int n , int * wt , int * val){
+        vector<int> prev(W+1,0) , curr(W+1,0);
+        for (int j = 0; j <= W; j++) {
+            if (j >= wt[0]) {
+                prev[j] = val[0];
+            }
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=W;j++){
+                int take = 0 ;
+                if(j >= wt[i]){
+                    take = prev[ j - wt[i]] + val[i];
+                }
+                int notTake = prev[ j];
+                curr[j] = max(take , notTake);
+            }
+            prev = curr;
+        }
+        return prev[W];
+    }
 };
+
 
 
 //{ Driver Code Starts.
