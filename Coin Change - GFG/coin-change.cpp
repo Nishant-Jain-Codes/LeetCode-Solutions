@@ -7,12 +7,12 @@ using namespace std;
 
 
 
-
 class Solution {
 public:
     long long int count(int coins[], int N, int sum) {
 
         // code here.
+        return tabulation(N,sum,coins);
         vector<vector<long long int>> dp(N,vector<long long int>(sum+1,-1));
         return memoisation(N-1,sum,coins,dp);
         return recursion(N-1,sum,coins);
@@ -32,6 +32,8 @@ private:
         return notTake+take;
         
     }
+    //time complexity O(N*sum)
+    //space complexity O(N*sum) + O(Sum){stack space}
     long long int memoisation(int idx , int sum , int * coins,vector<vector<long long int>>& dp){
         if(idx<0){
             return sum==0;
@@ -47,7 +49,30 @@ private:
         return dp[idx][sum] = notTake+take;
         
     }
+    long long int tabulation(int N , int sum , int * coins){
+        vector<vector<long long int>> dp(N,vector<long long int>(sum+1,0));
+        //if sum is zero then there is one way to make sum zero
+        for(int i=0;i<N;i++){
+            dp[i][0] = 1;
+        }
+        for(int i=1;i<=sum;i++){
+            if(i%coins[0]==0)
+                dp[0][i]+=1;
+        }
+        for(int i=1;i<N;i++){
+            for(int j=1;j<=sum;j++){
+                long long int notTake = dp[i-1][j];
+                long long int take = 0;
+                if(j-coins[i]>=0){
+                    take = dp[i][j-coins[i]];
+                }
+                dp[i][j] = notTake+take;
+            }
+        }
+        return dp[N-1][sum];
+    }
 };
+
 
 
 
