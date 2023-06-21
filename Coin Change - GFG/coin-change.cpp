@@ -12,6 +12,7 @@ public:
     long long int count(int coins[], int N, int sum) {
 
         // code here.
+        return optimized(N,sum,coins);
         return tabulation(N,sum,coins);
         vector<vector<long long int>> dp(N,vector<long long int>(sum+1,-1));
         return memoisation(N-1,sum,coins,dp);
@@ -49,6 +50,8 @@ private:
         return dp[idx][sum] = notTake+take;
         
     }
+    //time complexity O(N*sum)
+    //space complexity O(N*sum)
     long long int tabulation(int N , int sum , int * coins){
         vector<vector<long long int>> dp(N,vector<long long int>(sum+1,0));
         //if sum is zero then there is one way to make sum zero
@@ -71,8 +74,30 @@ private:
         }
         return dp[N-1][sum];
     }
+    long long int optimized(int N , int sum , int * coins){
+        vector<long long int> prev(sum+1,0);
+        vector<long long int> curr(sum+1,0);
+        //if sum is zero then there is one way to make sum zero
+        prev[0]=1;
+        curr[0]=1;
+        for(int i=1;i<=sum;i++){
+            if(i%coins[0]==0)
+                prev[i]+=1;
+        }
+        for(int i=1;i<N;i++){
+            for(int j=1;j<=sum;j++){
+                long long int notTake = prev[j];
+                long long int take = 0;
+                if(j-coins[i]>=0){
+                    take = curr[j-coins[i]];
+                }
+                curr[j] = notTake+take;
+            }
+            prev = curr;
+        }
+        return prev[sum];
+    }
 };
-
 
 
 
