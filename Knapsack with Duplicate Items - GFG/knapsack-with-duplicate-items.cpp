@@ -7,11 +7,14 @@ using namespace std;
 // } Driver Code Ends
 // User function Template for C++
 
+
 class Solution{
 public:
     int knapSack(int N, int W, int val[], int wt[])
     {
         // code here
+        return optimized(N,W,val,wt);
+        return tabulation(N,W,val,wt);
         vector<vector<int>> dp(N,vector<int>(W+1,-1));
         return memoisation(N-1,W,val,wt,dp);
         return recursive(N-1,W,val,wt);
@@ -37,9 +40,36 @@ private:
             take = val[idx] + memoisation(idx,W-wt[idx],val,wt,dp);
         return dp[idx][W] = max(notTake,take);
     }
+    int tabulation(int N, int W, int * val , int * wt){
+        vector<vector<int>> dp(N+1,vector<int>(W+1,0));
+        for(int i=1;i<=N;i++){
+            for(int j=1;j<=W;j++){
+                int notTake = dp[i-1][j];
+                int take = 0;
+                if(j-wt[i-1]>=0)
+                    take = val[i-1] + dp[i][j-wt[i-1]];
+                dp[i][j] = max(notTake,take);
+            }
+        }
+        return dp[N][W];
+    }
+    int optimized(int N, int W, int * val , int * wt){
+        vector<int> prev(W+1,0);
+        vector<int> curr(W+1,0);
+        for(int i=1;i<=N;i++){
+            for(int j=1;j<=W;j++){
+                int notTake = prev[j];
+                int take = 0;
+                if(j-wt[i-1]>=0)
+                    take = val[i-1] + curr[j-wt[i-1]];
+                curr[j] = max(notTake,take);
+            }
+            prev = curr;
+        }
+        return prev[W];
+    }
 
 };
-
 
 //{ Driver Code Starts.
 
