@@ -12,12 +12,15 @@ public:
     int matrixMultiplication(int N, int arr[])
     {
         // code here
+        return tabulation( N,arr);
         vector<vector<int>> dp(N, vector<int>(N, -1));
         return memoization(arr, 1, N - 1, dp); // arr, i , j
-        return recursion(arr, 1, N - 1); // arr, i , j
+        return recursion(arr, 1, N - 1);       // arr, i , j
     }
 
 private:
+    // time complexity - O(exp)
+    // space complexity - O(n)
     int recursion(int *arr, int i, int j)
     {
         if (i >= j)
@@ -29,18 +32,48 @@ private:
         }
         return temp;
     }
-    int memoization(int *arr, int i, int j,vector<vector<int>> & dp)
+    // time complexity - O(n^3)
+    // space complexity - O(n^2) + O(n) stack space
+    int memoization(int *arr, int i, int j, vector<vector<int>> &dp)
     {
         if (i >= j)
             return 0;
-        if(dp[i][j]!=-1)
+        if (dp[i][j] != -1)
             return dp[i][j];
         int temp = INT_MAX;
         for (int k = i; k < j; k++)
         {
-            temp = min(temp, memoization(arr, i, k,dp) + memoization(arr, k + 1, j,dp) + (arr[i - 1] * arr[k] * arr[j]));
+            temp = min(temp, memoization(arr, i, k, dp) + memoization(arr, k + 1, j, dp) + (arr[i - 1] * arr[k] * arr[j]));
         }
         return dp[i][j] = temp;
+    }
+    int tabulation(int N, int arr[])
+    {
+        vector<vector<int>> dp(N, vector<int>(N, 0));
+        // for(int i=0;i<N;i++)
+        //     dp[i][i] = 0;
+        for (int i = N - 1; i > 0; i--)
+        {
+            for (int j = 1; j < N; j++)
+            {
+                if (i >= j)
+                    dp[i][j] =  0;
+                else{
+                    int temp = INT_MAX;
+                for (int k = i; k < j; k++)
+                {
+                    temp = min(temp, dp[i][k] + dp[k+1][j]  + (arr[i - 1] * arr[k] * arr[j]));
+                }
+                dp[i][j] = temp;
+                }
+            }
+        }
+        // for(int i=0;i<N;i++){
+        //     for(int j=0;j<N;j++)
+        //         cout<<dp[i][j]<<" ";
+        //     cout<<endl;
+        // }
+        return dp[1][N - 1];
     }
 };
 
