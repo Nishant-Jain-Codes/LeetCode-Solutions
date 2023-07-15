@@ -12,7 +12,7 @@ public:
     int matrixMultiplication(int N, int arr[])
     {
         // code here
-        return tabulation( N,arr);
+        return tabulation(N, arr);
         vector<vector<int>> dp(N, vector<int>(N, -1));
         return memoization(arr, 1, N - 1, dp); // arr, i , j
         return recursion(arr, 1, N - 1);       // arr, i , j
@@ -47,6 +47,8 @@ private:
         }
         return dp[i][j] = temp;
     }
+    // time complexity - O(n^3)
+    // space complexity - O(n^2)
     int tabulation(int N, int arr[])
     {
         vector<vector<int>> dp(N, vector<int>(N, 0));
@@ -54,25 +56,16 @@ private:
         //     dp[i][i] = 0;
         for (int i = N - 1; i > 0; i--)
         {
-            for (int j = 1; j < N; j++)
+            for (int j = i + 1; j < N; j++)
             {
-                if (i >= j)
-                    dp[i][j] =  0;
-                else{
-                    int temp = INT_MAX;
+                int temp = INT_MAX;
                 for (int k = i; k < j; k++)
                 {
-                    temp = min(temp, dp[i][k] + dp[k+1][j]  + (arr[i - 1] * arr[k] * arr[j]));
+                    temp = min(temp, dp[i][k] + dp[k + 1][j] + (arr[i - 1] * arr[k] * arr[j]));
                 }
                 dp[i][j] = temp;
-                }
             }
         }
-        // for(int i=0;i<N;i++){
-        //     for(int j=0;j<N;j++)
-        //         cout<<dp[i][j]<<" ";
-        //     cout<<endl;
-        // }
         return dp[1][N - 1];
     }
 };
