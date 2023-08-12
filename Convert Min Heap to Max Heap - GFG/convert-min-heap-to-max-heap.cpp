@@ -12,7 +12,7 @@ class Solution
 public:
     void convertMinToMaxHeap(vector<int> &arr, int N)
     {
-        int lastNonLeafNode = (N / 2) - 1;
+        int lastNonLeafNode = N-1;
         for(int i = lastNonLeafNode; i >= 0; i--)
             heapify(arr, N, i);
     }
