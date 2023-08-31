@@ -22,33 +22,39 @@ struct Job
     int profit; // Profit if job is over before or on deadline 
 };
 */
-class Solution 
+class Solution
 {
-    public:
-    //Function to find the maximum profit and the number of jobs done.
-    static bool comp(Job a,Job b){
-        return a.profit>b.profit;
-    }
-    vector<int> JobScheduling(Job arr[], int n) 
-    { 
-        // sort according to profit in decreasing order
-        bool done[n]={0};
-        sort(arr,arr+n,comp);
-        int noj=0;
-        int profit=0;
-        for(int i=0;i<n;i++){
-            for(int j=min(n,arr[i].dead-1);j>=0;j--){
-                if(done[j]==false){
-                    done[j]=true;
-                    noj++;
-                    profit+=arr[i].profit;
+public:
+    // Function to find the maximum profit and the number of jobs done.
+    vector<int> JobScheduling(Job arr[], int n)
+    {
+        // your code here
+        sort(arr, arr + n, [](const Job &a, const Job &b)
+             { return a.profit > b.profit; });
+
+        vector<bool> slotFilled(n, false); // To track filled slots
+        int numJobs = 0;
+        int totalProfit = 0;
+
+        // Schedule jobs in available slots
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = min(n, arr[i].dead) - 1; j >= 0; j--)
+            {
+                if (!slotFilled[j])
+                {
+                    slotFilled[j] = true;
+                    numJobs++;
+                    totalProfit += arr[i].profit;
                     break;
                 }
             }
         }
-        return {noj,profit};
-        
-    } 
+
+        return {numJobs, totalProfit};
+       // return solution2(arr, n);
+    }
+
 };
 
 
